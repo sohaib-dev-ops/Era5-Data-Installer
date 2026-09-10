@@ -1,0 +1,23 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Large Datasets and Downloads (saved locally)
+downloads_nc/
+excel_output/
+csv_output/
+*.nc
+*.zip
+*.xlsx
+*.csv
+
+# Environment and Credentials
+.cdsapirc
+.env
+.venv/
+venv/
+ENV/
+
+# Logs
+*.log
