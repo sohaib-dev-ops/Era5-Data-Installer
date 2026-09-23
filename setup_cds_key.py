@@ -27,7 +27,10 @@ def setup_key():
             print("Aborted.")
             return
 
-    token = input("Enter your CDS Personal Access Token: ").strip()
+    if len(sys.argv) > 1:
+        token = sys.argv[1].strip()
+    else:
+        token = input("Enter your CDS Personal Access Token: ").strip()
     if not token:
         print("Error: Token cannot be empty.")
         return

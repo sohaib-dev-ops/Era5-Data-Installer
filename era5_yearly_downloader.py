@@ -27,10 +27,15 @@ import xarray as xr
 # Bounding box for area of interest
 AREA = [34.0, 69.25, 27.5, 75.5]
 
-def get_cds_client():
+def get_cds_client(api_key=None):
     """Verify CDS credentials and return a cdsapi Client."""
+    import cdsapi
+    if api_key:
+        return cdsapi.Client(url="https://cds.climate.copernicus.eu/api", key=api_key)
+
     cdsapirc_path = os.path.expanduser("~/.cdsapirc")
-    if not os.path.exists(cdsapirc_path):
+    has_env = os.environ.get("CDSAPI_KEY")
+    if not os.path.exists(cdsapirc_path) and not has_env:
         print("\n" + "=" * 65)
         print("[ERROR] CDS API credentials file (.cdsapirc) not found!")
         print(f"Target location: {cdsapirc_path}")
@@ -42,19 +47,34 @@ def get_cds_client():
         print("3. Copy your Personal Access Token from:")
         print("   https://cds.climate.copernicus.eu/profile")
         print("4. Run: python setup_cds_key.py")
+        print("   or pass: --api_key <YOUR_TOKEN>")
         print("=" * 65 + "\n")
         sys.exit(1)
     
-    import cdsapi
     return cdsapi.Client()
 
+import tarfile
+
 def extract_nc_from_zip(zip_path, extract_dir):
-    """Extract .nc file from CDS zip download."""
-    with zipfile.ZipFile(zip_path, 'r') as zf:
-        zf.extractall(extract_dir)
-        nc_files = [os.path.join(extract_dir, f) for f in zf.namelist() if f.endswith(".nc")]
-        if nc_files:
-            return nc_files[0]
+    """Extract .nc file from CDS zip or tar download, or return None if already raw."""
+    if zipfile.is_zipfile(zip_path):
+        try:
+            with zipfile.ZipFile(zip_path, 'r') as zf:
+                zf.extractall(extract_dir)
+                nc_files = [os.path.join(extract_dir, f) for f in zf.namelist() if f.endswith(".nc")]
+                if nc_files:
+                    return nc_files[0]
+        except Exception as e:
+            print(f"[!] Warning extracting zip: {e}")
+    elif tarfile.is_tarfile(zip_path):
+        try:
+            with tarfile.open(zip_path, 'r:*') as tf:
+                tf.extractall(extract_dir)
+                nc_files = [os.path.join(extract_dir, f) for f in tf.getnames() if f.endswith(".nc")]
+                if nc_files:
+                    return nc_files[0]
+        except Exception as e:
+            print(f"[!] Warning extracting tar: {e}")
     return None
 
 def download_year(client, year, downloads_dir):
@@ -191,16 +211,17 @@ def convert_nc_to_excel_and_csv(nc_path, year, excel_dir, csv_dir=None):
 
 def main():
     parser = argparse.ArgumentParser(description="Download ERA5 and save as Year-by-Year Excel files.")
-    parser.add_argument("--start_year", type=int, default=1940, help="First year to process (default: 1940)")
-    parser.add_argument("--end_year", type=int, default=2025, help="Last year to process (default: 2025)")
+    parser.add_argument("--start_year", type=int, default=1966, help="First year to process (default: 1966)")
+    parser.add_argument("--end_year", type=int, default=1975, help="Last year to process (default: 1975)")
     parser.add_argument("--downloads_dir", type=str, default="./downloads_nc", help="Folder for raw NetCDF files")
     parser.add_argument("--excel_dir", type=str, default="./excel_output", help="Folder for generated Excel files")
     parser.add_argument("--keep_nc", action="store_true", help="Keep raw NetCDF files after Excel conversion (default: False to save disk space)")
     parser.add_argument("--export_csv", action="store_true", help="Also generate long-format CSV files")
     parser.add_argument("--csv_dir", type=str, default="./csv_output", help="Folder for CSV files")
+    parser.add_argument("--api_key", type=str, default=None, help="Copernicus CDS API Personal Access Token")
     args = parser.parse_args()
 
-    client = get_cds_client()
+    client = get_cds_client(args.api_key)
 
     total_years = args.end_year - args.start_year + 1
     print("\n" + "=" * 65)

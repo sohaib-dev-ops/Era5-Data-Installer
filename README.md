@@ -13,7 +13,7 @@ To download ERA5 data, you need free access to the Copernicus Climate Data Store
 3. **Copy your Personal Access Token**: Go to your [CDS User Profile](https://cds.climate.copernicus.eu/profile) and copy the Personal Access Token.
 4. **Configure your key**: Run:
    ```cmd
-   C:\Users\HP\.python311\python.exe setup_cds_key.py
+   python setup_cds_key.py
    ```
    Paste your token when prompted. This automatically writes your `~/.cdsapirc` configuration file.
 
@@ -31,10 +31,10 @@ Or via Python directly:
 
 ```cmd
 # Process all years from 1940 to 2025:
-C:\Users\HP\.python311\python.exe era5_yearly_downloader.py --start_year 1940 --end_year 2025
+python era5_yearly_downloader.py --start_year 1940 --end_year 2025
 
 # Or test with a smaller range (e.g., 2023 to 2024):
-C:\Users\HP\.python311\python.exe era5_yearly_downloader.py --start_year 2023 --end_year 2024
+python era5_yearly_downloader.py --start_year 2023 --end_year 2024
 ```
 
 ### Resume Support

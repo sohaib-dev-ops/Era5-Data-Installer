@@ -1,7 +1,7 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-set PYTHON_EXE=C:\Users\HP\.python311\python.exe
+set PYTHON_EXE=python
 
 echo ===============================================================
 echo     ERA5 Reanalysis 2m Temperature Download & Excel Pipeline
@@ -20,6 +20,6 @@ echo Target area: Lat [27.5, 34.0], Lon [69.25, 75.5]
 echo Output directory: excel_output\
 echo.
 
-"%PYTHON_EXE%" era5_yearly_downloader.py --start_year 1940 --end_year 2025 --export_csv
+"%PYTHON_EXE%" era5_yearly_downloader.py --start_year 1966 --end_year 1975
 
 pause
