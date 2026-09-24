@@ -5,11 +5,9 @@ __pycache__/
 
 # Large Datasets and Downloads (saved locally)
 downloads_nc/
-excel_output/
 csv_output/
 *.nc
 *.zip
-*.xlsx
 *.csv
 
 # Environment and Credentials
