@@ -6,9 +6,25 @@ __pycache__/
 # Large Datasets and Downloads (saved locally)
 downloads_nc/
 csv_output/
+compiled_cache/
 *.nc
 *.zip
 *.csv
+*.pkl
+
+# Individual Yearly Excel files
+excel_output/
+
+# Decade Compiled Datasets (intermediate decade files kept locally)
+ERA5_Daily_Compiled_1940_1949.xlsx
+ERA5_Daily_Compiled_1950_1959.xlsx
+ERA5_Daily_Compiled_1960_1969.xlsx
+ERA5_Daily_Compiled_1970_1979.xlsx
+ERA5_Daily_Compiled_1980_1989.xlsx
+ERA5_Daily_Compiled_1990_1999.xlsx
+ERA5_Daily_Compiled_2000_2009.xlsx
+ERA5_Daily_Compiled_2010_2019.xlsx
+ERA5_Daily_Compiled_2020_2026.xlsx
 
 # Environment and Credentials
 .cdsapirc

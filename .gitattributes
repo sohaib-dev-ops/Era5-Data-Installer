@@ -1,0 +1,2 @@
+ERA5_Daily_Compiled_1940_2026_Full.xlsx filter=lfs diff=lfs merge=lfs -text
+ERA5_Stations_Transformed_1940_2026.xlsx filter=lfs diff=lfs merge=lfs -text

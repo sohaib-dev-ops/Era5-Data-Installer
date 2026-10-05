@@ -1,1 +1,1 @@
-python era5_yearly_downloader.py --start_year 1987 --end_year 1995
+python era5_yearly_downloader.py --start_year 2011 --end_year 2020

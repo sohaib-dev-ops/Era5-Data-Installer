@@ -20,6 +20,6 @@ echo Target area: Lat [27.5, 34.0], Lon [69.25, 75.5]
 echo Output directory: excel_output\
 echo.
 
-"%PYTHON_EXE%" era5_yearly_downloader.py --start_year 1966 --end_year 1975
+"%PYTHON_EXE%" era5_yearly_downloader.py --start_year 2011 --end_year 2020
 
 pause
